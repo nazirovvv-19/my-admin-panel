@@ -1,17 +1,16 @@
-import { Button, message, Spin, Table } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, message, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { UserType } from "../types";
-import useGlobalStore from "../store/store";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import PostUser from "../components/PostUser";
 import api from "../api/Api";
+import PostUser from "../components/PostUser";
+import useGlobalStore from "../store/store";
+import { UserType } from "../types";
 
 function UsersPage() {
   const accessToken = useGlobalStore((s) => s.accessToken);
   const [users, setUsers] = useState<UserType[]>([]);
   const [openUserDrawer, setOpenUserDrawer] = useState(false);
-  const [loading, setLoading] = useState();
   const user = () => {
     api
       .get("/api/users?limit=10&page=1&order=ASC")

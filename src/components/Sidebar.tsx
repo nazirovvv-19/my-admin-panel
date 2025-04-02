@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, BankOutlined, CarryOutFilled, CloudDownloadOutlined, HomeOutlined, ImportOutlined, ProductOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, CarryOutFilled, HomeOutlined, ProductOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useLocation } from "react-router";
 

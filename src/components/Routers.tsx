@@ -1,10 +1,9 @@
-import React from 'react'
 import { Route, Routes } from 'react-router'
-import HomePage from '../pages/HomePage'
-import UsersPage from '../pages/UsersPage'
-import ProductsPage from '../pages/ProductsPage'
-import CategoriesPage from '../pages/CategoriesPage'
 import BannerPage from '../pages/BannerPage'
+import CategoriesPage from '../pages/CategoriesPage'
+import HomePage from '../pages/HomePage'
+import ProductsPage from '../pages/ProductsPage'
+import UsersPage from '../pages/UsersPage'
 
 function Routers() {
   return (

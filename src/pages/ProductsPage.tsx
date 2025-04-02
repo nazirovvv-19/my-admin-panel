@@ -1,7 +1,7 @@
+import { Button, message, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Product, TopProduct } from "../types";
-import { Button, message, Table } from "antd";
+import { Product } from "../types";
 
 function ProductsPage() {
   const [product, setproduct] = useState<Product[]>([]);

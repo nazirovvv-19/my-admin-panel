@@ -1,12 +1,10 @@
-import React from "react";
-import useGlobalStore from "../store/store";
-import userLogo from "../assets/userLogo.png";
-import { Avatar, Dropdown } from "antd";
 import {
   LoginOutlined,
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Avatar, Dropdown } from "antd";
+import useGlobalStore from "../store/store";
 
 function Navbar() {
   const auth = useGlobalStore();

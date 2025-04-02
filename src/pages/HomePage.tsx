@@ -1,7 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { DashboardData } from "../types";
 import { message } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { DashboardData } from "../types";
 
 function HomePage() {
   const [dashboard, setDashboard] = useState<DashboardData>();

@@ -1,4 +1,4 @@
-import { Button, Spin, Table } from "antd";
+import { Button, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { bannerType } from "../types";
