@@ -1,0 +1,49 @@
+export type UserType = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  image: string;
+  role: string;
+  createdAt: string;
+};
+export interface bannerType {
+  id: number;
+  title: string;
+  imageUrl: string;
+  isActive: boolean;
+  createdAt: string;
+}
+export type RecentOrder = {
+  id: number;
+  customerId: number;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+};
+
+export type TopProduct = {
+  id: number;
+  name: string;
+  totalSold: number;
+};
+
+export type DashboardData = {
+  totalUsers: string;
+  totalOrders: string;
+  totalProducts: string;
+  totalRevenue: string;
+  recentOrders: RecentOrder[];
+  topProducts: TopProduct[];
+};
+
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  categoryId: number;
+  createdAt: string;
+  imageUrl: string;
+};
