@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { TopProduct } from "../types";
+import { Product, TopProduct } from "../types";
 import { Button, message, Table } from "antd";
 
 function ProductsPage() {
-  const [product, setproduct] = useState<TopProduct[]>([]);
+  const [product, setproduct] = useState<Product[]>([]);
   const fetchProduct = () => {
     axios
       .get(`https://nt.softly.uz/api/products?limit=10&page=1&order=ASC`)
@@ -69,7 +69,7 @@ function ProductsPage() {
               title: "categoryNme",
               dataIndex: "categoryId",
               key: "categoryId",
-              
+
             },
             {
               title: "imageUrl",

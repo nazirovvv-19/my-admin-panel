@@ -37,7 +37,7 @@ export type DashboardData = {
   topProducts: TopProduct[];
 };
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   description: string;
