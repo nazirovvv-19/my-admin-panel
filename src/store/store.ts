@@ -20,7 +20,7 @@ const useGlobalStore = create<GlobalState>((set) => {
   const ls = JSON.parse(ls_string);
   console.log("ls", ls);
 
-  api.defaults.headers.accessToken = `Bearer ${ls.accessToken}`;
+  api.defaults.headers.Authorization = `Bearer ${ls.accessToken}`;
 
   return {
     accessToken: ls.accessToken,

@@ -20,7 +20,7 @@ function Sidebar() {
           items={[
             {
               key: "/",
-              label: <Link to={"/"}>Home</Link>,
+              label: <Link to={"/"}>Dashboard</Link>,
               icon: <HomeOutlined />,
             },
             {

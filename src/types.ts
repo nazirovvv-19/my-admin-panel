@@ -47,3 +47,9 @@ export type Product = {
   createdAt: string;
   imageUrl: string;
 };
+export type CatigoriesType = {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+};
