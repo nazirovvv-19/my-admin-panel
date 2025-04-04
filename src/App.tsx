@@ -7,16 +7,16 @@ import Routers from './components/Routers'
 function App() {
   const auth = useGlobalStore()
   return (
-    <>
+    <div className='container mx-auto '>
      {auth.user?<>
       <Navbar/>
 
-      <div className='flex h-full '>
+      <div className='flex h-[620px] '>
         <Sidebar/>
         <Routers/>
       </div>
      </>:<Login/>}
-    </>
+    </div>
   )
 }
 

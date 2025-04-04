@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, CarryOutFilled, HomeOutlined, ProductOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, CarryOutFilled, HomeOutlined, ProductOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useLocation } from "react-router";
 
@@ -42,6 +42,11 @@ function Sidebar() {
                 key: "/banner",
                 label: <Link to={"/banner"}>Banner</Link>,
                 icon: <AppstoreAddOutlined />,
+              },
+              {
+                key: "/order",
+                label: <Link to={"/order"}>Orders</Link>,
+                icon: <ShoppingCartOutlined />,
               },
           ]}
         />

@@ -27,22 +27,30 @@ function CategoriesPage() {
 
   if (!categoryy.length) {
     return (
-      <div className="m-auto flex justify-center items-center top-0 bottom-0 left-0 right-0">
-        loading
-      </div>
+      <div className="banter-loader">
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+      <div className="banter-loader__box"></div>
+    </div>
     );
   }
 
   function DeleteUser(id: number) {
     api
-      .delete(`/api/categories/${id}`, {})
+      .delete(`/api/categories/${id}`)
       .then((res) => {
         console.log(res.data);
         setCategoryy((i) => i.filter((item) => item.id !== id));
         message.success("O'chirish amalga oshirildi ");
       })
       .catch((e) => {
-        message.error("O'chirish amalga oshirilmadi " + e);
+        message.error("O'chirish amalga oshirilmadi " + e.message);
       });
   }
 

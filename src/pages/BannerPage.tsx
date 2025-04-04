@@ -1,8 +1,9 @@
-import { Button, Switch, Table } from "antd";
+import { Button, message, Switch, Table } from "antd";
 import { useEffect, useState } from "react";
 import api from "../api/Api";
 import { bannerType } from "../types";
 import BannersPost from "../components/BannersPost";
+import { DeleteOutlined } from "@ant-design/icons";
 
 function BannerPage() {
   const [bannerState, setBannerState] = useState<bannerType[]>([]);
@@ -35,6 +36,15 @@ function BannerPage() {
         console.error("Error updating banner", e);
       });
   };
+  function onDelete(id:number) {
+    api.delete(`/api/banners/${id}`).then(_=>{
+     setBannerState(prev=>prev.filter(item=>item.id!== id))
+     message.success('Ochirilib yuborildi')
+    }).catch(e=>{
+      console.log(e + " ochirishda xatolik");
+      message.error('ochirishni imkoni bolmadi')
+    })
+  }
   if (!bannerState?.length) {
     return (
       <div className="banter-loader">
@@ -84,6 +94,18 @@ function BannerPage() {
             render: (image) => (
               <div>
                 <img width={70} src={image} alt="" />
+              </div>
+            ),
+          },
+          {
+            key: 6,
+            dataIndex: "id",
+            title: "Actions",
+            render: (id:number) => (
+              <div>
+               <Button onClick={()=>onDelete(id)}>
+                <DeleteOutlined/>
+               </Button>
               </div>
             ),
           },
