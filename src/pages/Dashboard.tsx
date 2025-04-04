@@ -37,7 +37,7 @@ function HomePage() {
         <div className="bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-md">
           <p className="text-gray-600 text-sm mb-2">Umumiy Daromad</p>
           <p className="text-2xl font-bold text-emerald-600">
-            {dashboard?.totalRevenue} som
+            {Number(dashboard?.totalRevenue).toLocaleString('ru') } som
           </p>
         </div>
 
@@ -75,7 +75,9 @@ function HomePage() {
                   <span className="text-gray-600">
                     Mijoz ID: {item.customerId}
                   </span>
-                  <span className="font-medium">${item.totalPrice}</span>
+                  <span className="font-medium">
+                    {item.totalPrice.toLocaleString("ru")} so'm
+                  </span>
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
                   {new Date(item.createdAt).toLocaleDateString()}
@@ -97,7 +99,7 @@ function HomePage() {
                     {item.totalSold} ta sotilgan
                   </p>
                 </div>
-                <div className="w-32 ml-4">
+                <div className="w-36 ml-4">
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-600 rounded-full"

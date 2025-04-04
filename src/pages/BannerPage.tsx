@@ -8,15 +8,21 @@ import { DeleteOutlined } from "@ant-design/icons";
 function BannerPage() {
   const [bannerState, setBannerState] = useState<bannerType[]>([]);
   const [bannerDrawer, setBannerDrawer] = useState(false)
+  const [loading,setLoading]=useState<boolean>(true)
   const banners = () => {
+    setLoading(true)
     api
+    
       .get("/api/banners?limit=10&page=1&order=ASC")
       .then((res) => {
+
         setBannerState(res.data.items);
       })
       .catch((e) => {
         console.log(e);
-      });
+      }).finally(()=>{
+        setLoading(false)
+      })
   };
   useEffect(() => {
     banners();
@@ -45,21 +51,8 @@ function BannerPage() {
       message.error('ochirishni imkoni bolmadi')
     })
   }
-  if (!bannerState?.length) {
-    return (
-      <div className="banter-loader">
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-      </div>
-    );
-  }
+
+
   return (
     <div className="w-full h-full p-6">
       <div className="flex justify-between items-center mb-5 ">
@@ -67,6 +60,7 @@ function BannerPage() {
         <Button onClick={()=>setBannerDrawer(true)}>Qoshish</Button>
       </div>
       <Table
+      loading={loading}
         size="small"
         style={{ overflow: "auto", height: "100%" }}
         dataSource={bannerState}

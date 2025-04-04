@@ -1,11 +1,14 @@
 import { Button, Drawer, Form, Input, message, Switch } from "antd";
 import { useForm } from "antd/es/form/Form";
 import api from "../api/Api";
+import { useState } from "react";
 // import { useEffect, useState } from "react";
 // import { CatigoriesType } from "../types";
 
 function BannersPost({ setBannerDrawer, bannerDrawer, banners }: any) {
   const [form] = useForm();
+    const [loading,setLoading]=useState<boolean>(false)
+  
   // const [categoryName, setCategoryName] = useState<CatigoriesType[]>([])
 
   // useEffect(()=>{
@@ -28,7 +31,7 @@ function BannersPost({ setBannerDrawer, bannerDrawer, banners }: any) {
           layout="vertical"
           onFinish={(values) => {
             console.log(values);
-
+            setLoading(true)
             api
               .post(`/api/banners`, {
                 title: values.title,
@@ -49,6 +52,7 @@ function BannersPost({ setBannerDrawer, bannerDrawer, banners }: any) {
               .finally(() => {
                 form.resetFields();
                 setBannerDrawer(false);
+                setLoading(false)
               });
           }}
         >
@@ -64,7 +68,7 @@ function BannersPost({ setBannerDrawer, bannerDrawer, banners }: any) {
           
       
           <Form.Item>
-            <Button htmlType="submit" style={{ marginTop: 15 }}>
+            <Button htmlType="submit" style={{ marginTop: 15 }} loading={loading}>
               Qoshish
             </Button>
           </Form.Item>

@@ -111,6 +111,9 @@ function CategoriesPage() {
       </div>
     </>
   );
+  {if (categoryy.length===0) {
+    return <div>loading</div>
+  }}
 }
 
 export default CategoriesPage;

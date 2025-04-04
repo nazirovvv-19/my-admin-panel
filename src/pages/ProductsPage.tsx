@@ -1,20 +1,23 @@
-import { Button, message, Table } from "antd";
-import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { CatigoriesType, Product } from "../types";
+import { Button, Image, message, Table } from "antd";
+import { useEffect, useState } from "react";
 import api from "../api/Api";
+import EditProduct from "../components/EditProduct";
 import ProductsPost from "../components/ProductPost";
+import { CatigoriesType, Product, ProductType } from "../types";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [productOpen, setproductOpen] = useState(false);
   const [forCategoryName, setForCategoryName] = useState<CatigoriesType[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ProductType>();
 
   const fetchProducts = () => {
     api
       .get("/api/products?limit=10&page=1&order=ASC")
       .then((res) => {
         setProducts(res.data.items);
+        console.log(res.data);
       })
       .catch((e) => {
         console.error("Xatolik yuz berdi", e);
@@ -29,21 +32,21 @@ function Products() {
     api.get("/api/categories").then((res) => {
       setForCategoryName(res.data.items);
     });
-  });
+  }, []);
 
   if (!products.length) {
     return (
       <div className="banter-loader">
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-    </div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+      </div>
     );
   }
 
@@ -89,7 +92,7 @@ function Products() {
             dataIndex: "price",
             key: "price",
             render: (price) => {
-              const formattedPrice = price.toLocaleString('ru');
+              const formattedPrice = price.toLocaleString("ru");
               return (
                 <div>
                   <p>{formattedPrice} som</p>
@@ -97,7 +100,7 @@ function Products() {
               );
             },
           },
-          
+
           { title: "Stock", dataIndex: "stock", key: "stock" },
           { title: "Created At", dataIndex: "createdAt", key: "createdAt" },
           {
@@ -116,25 +119,41 @@ function Products() {
             dataIndex: "imageUrl",
             key: "imageUrl",
             render: (imageUrl) => (
-              <img className="w-10 rounded" src={imageUrl} alt="" />
+              <Image
+                width={70}
+                height={60}
+                src={imageUrl}
+              />
             ),
           },
           {
             title: "Actions",
             dataIndex: "id",
             key: "id",
-            render: (id: number) => (
+            render: (id: number, nimadr: any) => (
               <div className="flex space-x-2">
-                <Button onClick={() => {}}>
+                <Button
+                  onClick={() => {
+                    setSelectedItem(nimadr);
+                    console.log(nimadr);
+                  }}
+                >
                   <EditOutlined />
                 </Button>
                 <div onClick={() => deleteProduct(id)}>
-                  <Button danger onClick={()=>deleteProduct(id)}><DeleteOutlined/></Button>
+                  <Button danger onClick={() => deleteProduct(id)}>
+                    <DeleteOutlined />
+                  </Button>
                 </div>
               </div>
             ),
           },
         ]}
+      />
+      <EditProduct
+        selectedItem={selectedItem}
+        set={setSelectedItem}
+        fetchProducts={fetchProducts}
       />
     </div>
   );
