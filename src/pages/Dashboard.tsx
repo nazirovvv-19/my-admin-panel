@@ -99,8 +99,8 @@ function HomePage() {
                     {item.totalSold} ta sotilgan
                   </p>
                 </div>
-                <div className="w-36 ml-4">
-                  <div className="h-2 bg-gray-200 rounded-full">
+                <div className="max-w-32  ml-4">
+                  <div className="h-2 bg-gray-200 rounded-full ">
                     <div
                       className="h-2 bg-blue-600 rounded-full"
                       style={{ width: `${(item.totalSold / 50) * 100}%` }}
