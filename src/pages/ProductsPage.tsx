@@ -11,8 +11,11 @@ function Products() {
   const [productOpen, setproductOpen] = useState(false);
   const [forCategoryName, setForCategoryName] = useState<CatigoriesType[]>([]);
   const [selectedItem, setSelectedItem] = useState<ProductType>();
+  const [loading, setLoading] = useState<boolean>(true);
+  
 
   const fetchProducts = () => {
+    setLoading(true)
     api
       .get("/api/products?limit=10&page=1&order=ASC")
       .then((res) => {
@@ -22,7 +25,7 @@ function Products() {
       .catch((e) => {
         console.error("Xatolik yuz berdi", e);
         message.error("Xatolik");
-      });
+      }).finally(()=>setLoading(false))
   };
 
   useEffect(() => {
@@ -34,21 +37,21 @@ function Products() {
     });
   }, []);
 
-  if (!products.length) {
-    return (
-      <div className="banter-loader">
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-      </div>
-    );
-  }
+  // if (!products.length) {
+  //   return (
+  //     <div className="banter-loader">
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //     </div>
+  //   );
+  // }
 
   function deleteProduct(id: number) {
     api
@@ -76,6 +79,7 @@ function Products() {
         />
       </div>
       <Table
+      loading={loading}
         style={{ overflow: "auto ", height: "100% " }}
         size="small"
         dataSource={products.map((item) => ({ ...item, key: item.id }))}

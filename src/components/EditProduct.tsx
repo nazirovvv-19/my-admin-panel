@@ -1,8 +1,17 @@
 import { Button, Drawer, Form, Input, InputNumber, message, Select } from 'antd';
 import api from '../api/Api';
+import { CatigoriesType } from '../types';
+import { useEffect, useState } from 'react';
 
 function EditProduct({ set, selectedItem,fetchProducts }: any) {
     console.log(selectedItem);
+    const [categoryNames, setCategoryNames] = useState<CatigoriesType[]>([]);
+
+    useEffect(()=>{
+      api.get('/api/categories').then(res=>{
+        setCategoryNames(res.data.items)
+      })
+    },[])
     
   return (
     <Drawer open={selectedItem ? true : false} onClose={() => set()}>
@@ -40,7 +49,12 @@ function EditProduct({ set, selectedItem,fetchProducts }: any) {
         </Form.Item>
 
         <Form.Item label="Category" name="categoryId" >
-          <Select>
+          <Select options={categoryNames.map(item=>{
+            return {
+              label:item.name,
+              value:item.id
+            }
+          })}>
            
           </Select>
         </Form.Item>

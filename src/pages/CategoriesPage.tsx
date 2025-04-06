@@ -2,44 +2,52 @@ import { useEffect, useState } from "react";
 import { Button, message, Table } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import api from "../api/Api";
-import { CatigoriesType } from "../types";
+import { CatigoriesType, CatigoriesTypeObj } from "../types";
 import CategoriesPost from "../components/CategoriesPost";
+import EditCategory from "../components/EditCategory";
 
 function CategoriesPage() {
   const [categoryy, setCategoryy] = useState<CatigoriesType[]>([]);
 
   const [isOpenDraver, setOpenDraver] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCategory, setSelectedCategory] = useState<CatigoriesTypeObj>()
 
   const CategoriesFetch = () => {
+    setLoading(true)
     api
       .get("/api/categories?limit=10&page=1&order=ASC")
       .then((res) => {
         setCategoryy(res.data.items);
+        console.log(res.data);
+        
       })
       .catch((e) => {
         console.error("Xatolik yuz berdi", e);
         message.error("Xatolik");
-      });
+      }).finally(()=>{
+        setLoading(false)
+      })
   };
   useEffect(() => {
     CategoriesFetch();
   }, []);
 
-  if (!categoryy.length) {
-    return (
-      <div className="banter-loader">
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-    </div>
-    );
-  }
+  // if (!categoryy.length) {
+  //   return (
+  //     <div className="banter-loader">
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //     <div className="banter-loader__box"></div>
+  //   </div>
+  //   );
+  // }
 
   function DeleteUser(id: number) {
     api
@@ -69,6 +77,7 @@ function CategoriesPage() {
           />
         </div>
         <Table
+        loading={loading}
           dataSource={categoryy.map((item) => ({ ...item, key: item.id }))}
           columns={[
             {
@@ -91,10 +100,10 @@ function CategoriesPage() {
               title: "delete",
               dataIndex: "id",
               key: "id",
-              render: (id: number) => {
+              render: (id: number,categoryData:any) => {
                 return (
                   <div className=" flex gap-2">
-                    <div onClick={() => {}}>
+                    <div onClick={() => setSelectedCategory(categoryData)}>
                       <Button>
                         <EditOutlined />
                       </Button>
@@ -108,12 +117,11 @@ function CategoriesPage() {
             },
           ]}
         />
+        <EditCategory selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} CategoriesFetch={CategoriesFetch} />
       </div>
     </>
   );
-  {if (categoryy.length===0) {
-    return <div>loading</div>
-  }}
+
 }
 
 export default CategoriesPage;

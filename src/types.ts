@@ -7,6 +7,12 @@ export type UserType = {
   role: string;
   createdAt: string;
 };
+export interface UserTypeObj{
+  items:UserType[]
+message:string
+page:number
+total:number
+}
 export interface bannerType {
   id: number;
   title: string;
@@ -60,6 +66,13 @@ export type CatigoriesType = {
   description: string;
   createdAt: string;
 };
+export interface CatigoriesTypeObj{
+  
+  items: CatigoriesType[];
+  message: string;
+  page: number;
+  total: number;
+}
 
 export type OrderItem = {
   id: number;
@@ -73,7 +86,7 @@ export type Order = {
   id: number;
   customerId: number;
   totalPrice: number;
-  status: "pending" | "completed" | "cancelled";
+  status: "pending" | "delivered" | "cancelled";
   createdAt: string;
   items: OrderItem[];
 };

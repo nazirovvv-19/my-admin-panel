@@ -5,13 +5,19 @@ import { useEffect, useState } from "react";
 import api from "../api/Api";
 import PostUser from "../components/PostUser";
 import useGlobalStore from "../store/store";
-import { UserType } from "../types";
+import { UserType, UserTypeObj } from "../types";
+import EditUser from "../components/EditUser";
 
 function UsersPage() {
   const accessToken = useGlobalStore((s) => s.accessToken);
   const [users, setUsers] = useState<UserType[]>([]);
   const [openUserDrawer, setOpenUserDrawer] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<UserTypeObj>();
+
+
   const user = () => {
+    setLoading(true)
     api
       .get("/api/users?limit=10&page=1&order=ASC")
       .then((res) => {
@@ -26,6 +32,7 @@ function UsersPage() {
       })
       .finally(() => {
         setOpenUserDrawer(false);
+        setLoading(false)
       });
   };
   useEffect(() => {
@@ -33,21 +40,21 @@ function UsersPage() {
     user();
   }, [accessToken]);
 
-  if (!users.length) {
-    return (
-      <div className="banter-loader">
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-        <div className="banter-loader__box"></div>
-      </div>
-    );
-  }
+  // if (!users.length) {
+  //   return (
+  //     <div className="banter-loader">
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //       <div className="banter-loader__box"></div>
+  //     </div>
+  //   );
+  // }
 
   function onDelete(id: number) {
     axios
@@ -76,6 +83,7 @@ function UsersPage() {
       </div>
       <div className="h-full">
         <Table
+        loading={loading}
           size="small"
           dataSource={users}
           columns={[
@@ -128,13 +136,13 @@ function UsersPage() {
               title: "delete & edit",
               dataIndex: "id",
               key: "id",
-              render: (id: number) => {
+              render: (id: number, userData:any) => {
                 return (
                   <div>
                     <Button onClick={() => onDelete(id)}>
                       <DeleteOutlined />
                     </Button>
-                    <Button onClick={() => onDelete(id)}>
+                    <Button onClick={() => setSelectedUser(userData)}>
                       <EditOutlined />
                     </Button>
                   </div>
@@ -150,6 +158,7 @@ function UsersPage() {
         openUserDrawer={openUserDrawer}
         setOpenUserDrawer={setOpenUserDrawer}
       />
+      <EditUser selectedUser={selectedUser} setSelectedUser={setSelectedUser} user={user}/>
     </div>
   );
 }
