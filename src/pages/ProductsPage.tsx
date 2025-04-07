@@ -2,9 +2,11 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Image, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import api from "../api/Api";
+// import ProductApi from "../api/ProductApi";
 import EditProduct from "../components/EditProduct";
 import ProductsPost from "../components/ProductPost";
 import { CatigoriesType, Product, ProductType } from "../types";
+import ProductApi from "../api/ProductsApi";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -16,8 +18,8 @@ function Products() {
 
   const fetchProducts = () => {
     setLoading(true)
-    api
-      .get("/api/products?limit=10&page=1&order=ASC")
+    ProductApi.getAll()
+    
       .then((res) => {
         setProducts(res.data.items);
         console.log(res.data);
@@ -37,25 +39,11 @@ function Products() {
     });
   }, []);
 
-  // if (!products.length) {
-  //   return (
-  //     <div className="banter-loader">
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //     </div>
-  //   );
-  // }
+ 
 
   function deleteProduct(id: number) {
     api
-      .delete(`/api/products/${id}`)
+     ProductApi.delete(id)
       .then(() => {
         setProducts((prev) => prev.filter((item) => item.id !== id));
         message.success("O'chirish amalga oshirildi ");

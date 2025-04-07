@@ -1,47 +1,36 @@
 import { Button, Drawer, Form, Input, message, Radio } from "antd";
-import axios from "axios";
-import useGlobalStore from "../store/store";
 import { useForm } from "antd/es/form/Form";
+import UserApi from "../api/UserApi";
+import { useState } from "react";
 
 function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
-  const accessToken = useGlobalStore((a) => a.accessToken);
-  const [form] = useForm()
+  const [form] = useForm();
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <div>
       <Drawer open={openUserDrawer} onClose={() => setOpenUserDrawer(false)}>
         <Form
-        form={form}
+          form={form}
           layout="vertical"
           onFinish={(values) => {
-            axios
-              .post(
-                `https://nt.softly.uz/api/users`,
-                { 
-                  name: values.name,
-                  email: values.email,
-                  password: values.password,
-                  image: values.image,
-                  role: values.role,
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                  },
-                }
-              )
+            setLoading(true)
+            UserApi.create(values)
+
               .then((res) => {
                 console.log(res.data);
 
                 user();
-                form.resetFields()
+                form.resetFields();
                 // setUsers(res.data);
                 //refresh
               })
               .catch((e) => {
                 console.log(e.message);
                 message.error("xatolik");
-              });
+              }).finally(()=>{
+                setLoading(false)
+              })
           }}
         >
           <Form.Item label="Name" name={"name"}>
@@ -67,7 +56,7 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
             <Input placeholder="Enter the image URL" />
           </Form.Item>
           <Form.Item>
-            <Button htmlType="submit">Qoshish</Button>
+            <Button loading={loading} type="primary" htmlType="submit">Qoshish</Button>
           </Form.Item>
         </Form>
       </Drawer>

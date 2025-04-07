@@ -4,29 +4,32 @@ import api from "../api/Api";
 import { bannerType } from "../types";
 import BannersPost from "../components/BannersPost";
 import { DeleteOutlined } from "@ant-design/icons";
+import BannersApi from "../api/BannersApi";
 
 function BannerPage() {
   const [bannerState, setBannerState] = useState<bannerType[]>([]);
-  const [bannerDrawer, setBannerDrawer] = useState(false)
-  const [loading,setLoading]=useState<boolean>(true)
-  const banners = () => {
-    setLoading(true)
-    api
-    
-      .get("/api/banners?limit=10&page=1&order=ASC")
-      .then((res) => {
+  const [bannerDrawer, setBannerDrawer] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [deleting, setDeleting] = useState<number | null>(null); // O'chirilayotgan bannerning ID sini saqlash
 
+  const banners = () => {
+    setLoading(true);
+    BannersApi.getAll()
+      .then((res) => {
         setBannerState(res.data.items);
       })
       .catch((e) => {
         console.log(e);
-      }).finally(()=>{
-        setLoading(false)
       })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+
   useEffect(() => {
     banners();
   }, []);
+
   const handleSwitchChange = (checked: boolean, id: number) => {
     const updatedBanners = bannerState.map((banner) =>
       banner.id === id ? { ...banner, isActive: checked } : banner
@@ -36,31 +39,37 @@ function BannerPage() {
     api
       .put(`/api/banners/${id}`, { isActive: checked })
       .then(() => {
-        console.log("Banner updated successfully");
+        console.log("Banner muvaffaqiyatli yangilandi");
       })
       .catch((e) => {
-        console.error("Error updating banner", e);
+        console.error("Banner yangilashda xatolik", e);
       });
   };
-  function onDelete(id:number) {
-    api.delete(`/api/banners/${id}`).then(_=>{
-     setBannerState(prev=>prev.filter(item=>item.id!== id))
-     message.success('Ochirilib yuborildi')
-    }).catch(e=>{
-      console.log(e + " ochirishda xatolik");
-      message.error('ochirishni imkoni bolmadi')
-    })
-  }
 
+  const onDelete = (id: number) => {
+    setDeleting(id); 
+    BannersApi.delete(id)
+      .then(() => {
+        setBannerState((prev) => prev.filter((item) => item.id !== id));
+        message.success('Ochirib yuborildi');
+      })
+      .catch((e) => {
+        console.log(e + " ochirishda xatolik");
+        message.error('O\'chirishni amalga oshirish mumkin emas');
+      })
+      .finally(() => {
+        setDeleting(null); 
+      });
+  };
 
   return (
     <div className="w-full h-full p-6">
       <div className="flex justify-between items-center mb-5 ">
         <h2>Banners</h2>
-        <Button onClick={()=>setBannerDrawer(true)}>Qoshish</Button>
+        <Button onClick={() => setBannerDrawer(true)}>Qoshish</Button>
       </div>
       <Table
-      loading={loading}
+        loading={loading} 
         size="small"
         style={{ overflow: "auto", height: "100%" }}
         dataSource={bannerState}
@@ -95,17 +104,20 @@ function BannerPage() {
             key: 6,
             dataIndex: "id",
             title: "Actions",
-            render: (id:number) => (
+            render: (id: number) => (
               <div>
-               <Button onClick={()=>onDelete(id)}>
-                <DeleteOutlined/>
-               </Button>
+                <Button
+                  onClick={() => onDelete(id)}
+                  loading={deleting === id} 
+                >
+                  <DeleteOutlined />
+                </Button>
               </div>
             ),
           },
         ]}
       />
-    <BannersPost banners={banners} bannerDrawer={bannerDrawer} setBannerDrawer={setBannerDrawer}/>
+      <BannersPost banners={banners} bannerDrawer={bannerDrawer} setBannerDrawer={setBannerDrawer} />
     </div>
   );
 }

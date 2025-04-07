@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Button, message, Table } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import api from "../api/Api";
-import { CatigoriesType, CatigoriesTypeObj } from "../types";
+import { Button, message, Table } from "antd";
+import { useEffect, useState } from "react";
+import CategoriesApi from "../api/CategoriesApi";
 import CategoriesPost from "../components/CategoriesPost";
 import EditCategory from "../components/EditCategory";
+import { CatigoriesType, CatigoriesTypeObj } from "../types";
 
 function CategoriesPage() {
   const [categoryy, setCategoryy] = useState<CatigoriesType[]>([]);
@@ -15,8 +15,7 @@ function CategoriesPage() {
 
   const CategoriesFetch = () => {
     setLoading(true)
-    api
-      .get("/api/categories?limit=10&page=1&order=ASC")
+    CategoriesApi.getAll()
       .then((res) => {
         setCategoryy(res.data.items);
         console.log(res.data);
@@ -33,25 +32,11 @@ function CategoriesPage() {
     CategoriesFetch();
   }, []);
 
-  // if (!categoryy.length) {
-  //   return (
-  //     <div className="banter-loader">
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //     <div className="banter-loader__box"></div>
-  //   </div>
-  //   );
-  // }
+
 
   function DeleteUser(id: number) {
-    api
-      .delete(`/api/categories/${id}`)
+      CategoriesApi.delete(id)
+
       .then((res) => {
         console.log(res.data);
         setCategoryy((i) => i.filter((item) => item.id !== id));

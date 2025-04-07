@@ -1,9 +1,11 @@
-import { Button, Table } from "antd";
-import api from "../api/Api";
-import { useState, useEffect } from "react";
-import { Order, OrderItem, OrdersResponse, Product, UserType } from "../types";
-import OrdersPost from "../components/OrdersPost";
 import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Table } from "antd";
+import { useEffect, useState } from "react";
+import OrdersApi from "../api/OrdersApi";
+import ProductApi from "../api/ProductsApi";
+import UserApi from "../api/UserApi";
+import OrdersPost from "../components/OrdersPost";
+import { Order, OrderItem, Product, UserType } from "../types";
 
 function OrderStatusBadge({ status }: { status: Order["status"] }) {
   const statusStyles = {
@@ -26,51 +28,39 @@ function OrdersPage() {
   const [userState, setUserState] = useState<UserType[]>([]);
   const [productState, setProductState] = useState<Product[]>([]);
   const [openOrderDrawer, setOpenDrawer] = useState(false);
-  const [loading,setLoading]=useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
 
-  
-  
-
-  const orders = () => {
-    setLoading(true)
-    api
-      .get<OrdersResponse>("/api/orders?order=ASC")
+  const ordersFetch = () => {
+    setLoading(true);
+    OrdersApi.getAll()
       .then((res) => {
         console.log("order", res.data.items);
         setOrderState(res.data.items);
       })
       .catch((error) => {
         console.error("Error fetching orders:", error);
-      }).finally(()=>{
-        setLoading(false)
       })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
-    orders();
-  }, []);
-
-
-  //users api 
-  useEffect(() => {
-    api.get("/api/users").then((res) => {
+    ordersFetch();
+    UserApi.getAll().then((res) => {
       setUserState(res.data.items);
       console.log(res.data);
     });
-  }, []);
-
-  //product api
-  
-  useEffect(() => {
-    api.get("/api/products").then((res) => {
+    ProductApi.getAll().then((res) => {
       setProductState(res.data.items);
-      console.log('products',res.data.items);
+      console.log("products", res.data.items);
     });
   }, []);
-  
-  function onDelete(id:number) {
-   api.delete(`/api/orders/${id}`).then(_=>setOrderState(prev=>prev.filter(item=>item.id!==id)))
-   
+
+  function onDelete(id: number) {
+    OrdersApi.delete(id).then((_) =>
+      setOrderState((prev) => prev.filter((item) => item.id !== id))
+    );
   }
   return (
     <div className="w-full h-full bg-gray-50">
@@ -79,17 +69,18 @@ function OrdersPage() {
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
           </div>
-          <Button type="primary" onClick={()=>setOpenDrawer(true)}>
+          <Button type="primary" onClick={() => setOpenDrawer(true)}>
             New Order
           </Button>
         </div>
-        <Table style={{
-          overflow:'auto',
-          height:560,
-          width:'100% '
-        }}
-        loading={loading}
-        size="large"
+        <Table
+          style={{
+            overflow: "auto",
+            height: 560,
+            width: "100% ",
+          }}
+          loading={loading}
+          size="large"
           columns={[
             {
               key: "id",
@@ -119,44 +110,53 @@ function OrdersPage() {
               key: "id",
               dataIndex: "totalPrice",
               title: "Jami",
-              render:(totalPrice)=>{
-                return <p>{totalPrice.toLocaleString('ru')} so'm</p>
-              }
+              render: (totalPrice) => {
+                return <p>{totalPrice.toLocaleString("ru")} so'm</p>;
+              },
             },
             {
               key: "id",
               dataIndex: "items",
               title: "Mahsulot",
-              render:(items:any)=>{
-                return <div>
-                  {items?.map((item:OrderItem)=>{
-                    const nomi= productState.find(productItem=>{
-                      return productItem.id=== item.productId
-                    })
-                    return nomi?.name
-                  })}
-                </div>
-              }
+              render: (items: any) => {
+                return (
+                  <div>
+                    {items?.map((item: OrderItem) => {
+                      const nomi = productState.find((productItem) => {
+                        return productItem.id === item.productId;
+                      });
+                      return nomi?.name;
+                    })}
+                  </div>
+                );
+              },
             },
             {
               key: "id",
               dataIndex: "id",
               title: "Actions",
-              render:(id:number)=>{
-                return <div>
-                  <Button danger onClick={()=>onDelete(id)}><DeleteOutlined/></Button>
-                </div>
-              }
+              render: (id: number) => {
+                return (
+                  <div>
+                    <Button danger onClick={() => onDelete(id)}>
+                      <DeleteOutlined />
+                    </Button>
+                  </div>
+                );
+              },
             },
           ]}
           dataSource={orderState}
           rowKey="id"
-          pagination={{pageSize:10}}
+          pagination={{ pageSize: 10 }}
         />
       </div>
-      <OrdersPost open={openOrderDrawer} setOpen={setOpenDrawer} orderFuntion={orders}/>
+      <OrdersPost
+        open={openOrderDrawer}
+        setOpen={setOpenDrawer}
+        orderFuntion={ordersFetch}
+      />
     </div>
-
   );
 }
 

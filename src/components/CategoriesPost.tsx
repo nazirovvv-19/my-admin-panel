@@ -2,24 +2,15 @@ import { Button, Drawer, Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import api from "../api/Api";
+import { useState } from "react";
 // import { useEffect, useState } from "react";
 // import { CatigoriesType } from "../types";
 
 function CategoriesPost({ setOpenDraver, isOpenDraver, CategoriesFetch }: any) {
   const [form] = useForm();
-  // const [categoryName, setCategoryName] = useState<CatigoriesType[]>([])
+      const [loading,setLoading]=useState<boolean>(false)
+  
 
-  // useEffect(()=>{
-  //   api
-  //     .get("/api/categories") 
-  //     .then((res) => {
-  //       setCategoryName(res.data.items); 
-  //     })
-  //     .catch((err) => {
-  //       console.error("Kategoriyalarni yuklashda xatolik:", err);
-  //       message.error("Kategoriyalarni yuklashda xatolik ");
-  //     });
-  // },[])
 
   return (
     <div>
@@ -29,7 +20,7 @@ function CategoriesPost({ setOpenDraver, isOpenDraver, CategoriesFetch }: any) {
           layout="vertical"
           onFinish={(values) => {
             console.log(values);
-
+            setLoading(true)
             api
               .post(`/api/categories`, {
                 name: values.name,
@@ -48,6 +39,7 @@ function CategoriesPost({ setOpenDraver, isOpenDraver, CategoriesFetch }: any) {
               .finally(() => {
                 form.resetFields();
                 setOpenDraver(false);
+                setLoading(false)
               });
           }}
         >
@@ -60,7 +52,7 @@ function CategoriesPost({ setOpenDraver, isOpenDraver, CategoriesFetch }: any) {
           
       
           <Form.Item>
-            <Button htmlType="submit" style={{ marginTop: 15 }}>
+            <Button loading={loading} htmlType="submit" style={{ marginTop: 15 }}>
               Qoshish
             </Button>
           </Form.Item>

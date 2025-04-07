@@ -10,11 +10,11 @@ function Navbar() {
   const auth = useGlobalStore();
   return (
     
-    <div className="container mx-auto px-6 py-2 bg-[#001529]">
+    <div className="  px-6 py-2 bg-[#001529]">
      <div className="flex justify-between items-center">
       <i className="font-bold text-xl text-white">Logo</i>
      <Dropdown
-        menu={{
+        menu={{ 
           items: [
             {
               key: 1,

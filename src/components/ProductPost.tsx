@@ -4,6 +4,8 @@ import TextArea from "antd/es/input/TextArea";
 import api from "../api/Api";
 import { useEffect, useState } from "react";
 import { CatigoriesType } from "../types";
+import ProductApi from "../api/ProductsApi";
+// import ProductApi from "../api/ProductApi";
 
 function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
   const [form] = useForm();
@@ -30,15 +32,7 @@ function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
           onFinish={(values) => {
             console.log(values);
 
-            api
-              .post(`/api/products`, {
-                name: values.name,
-                stock: Number(values.stock),
-                description: values.description,
-                price: Number(values.price),
-                imageUrl: values.imageUrl,
-                categoryId: Number(values.categoryId),
-              })
+            ProductApi.create(values)
               .then((res) => {
                 console.log(res.data);
 

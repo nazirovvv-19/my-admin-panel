@@ -1,5 +1,6 @@
 import { Button, Drawer, Form, Input, message } from "antd";
 import api from "../api/Api";
+import { useState } from "react";
 
 function EditCategory({
   setSelectedCategory,
@@ -7,6 +8,7 @@ function EditCategory({
   CategoriesFetch,
 }: any) {
   console.log(selectedCategory);
+     const [loading,setLoading]=useState<boolean>(false)
  
   return (
     <Drawer
@@ -17,6 +19,7 @@ function EditCategory({
       {selectedCategory && (
         <Form
           onFinish={(values) => {
+            setLoading(true)
             console.log(values);
             api
               .patch(`/api/categories/${selectedCategory.id}`, values)
@@ -25,7 +28,9 @@ function EditCategory({
                 message.success("ozgartirildi");
                 setSelectedCategory();
                 CategoriesFetch();
-              });
+              }).finally(()=>{
+                setLoading(false)
+              })
           }}
           layout="vertical"
           initialValues={selectedCategory}
@@ -39,7 +44,7 @@ function EditCategory({
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button loading={loading} type="primary" htmlType="submit">
               Submit
             </Button>
           </Form.Item>

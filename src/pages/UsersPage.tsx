@@ -1,12 +1,11 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, message, Table } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import api from "../api/Api";
+import UserApi from "../api/UserApi";
+import EditUser from "../components/EditUser";
 import PostUser from "../components/PostUser";
 import useGlobalStore from "../store/store";
 import { UserType, UserTypeObj } from "../types";
-import EditUser from "../components/EditUser";
 
 function UsersPage() {
   const accessToken = useGlobalStore((s) => s.accessToken);
@@ -14,12 +13,12 @@ function UsersPage() {
   const [openUserDrawer, setOpenUserDrawer] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<UserTypeObj>();
+  const [deleting, setDeleting]=useState<number|null>(null)
 
 
   const user = () => {
     setLoading(true)
-    api
-      .get("/api/users?limit=10&page=1&order=ASC")
+    UserApi.getAll()
       .then((res) => {
         setUsers(res.data.items);
         console.log("user", res.data);
@@ -40,36 +39,20 @@ function UsersPage() {
     user();
   }, [accessToken]);
 
-  // if (!users.length) {
-  //   return (
-  //     <div className="banter-loader">
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //       <div className="banter-loader__box"></div>
-  //     </div>
-  //   );
-  // }
+
 
   function onDelete(id: number) {
-    axios
-      .delete(`https://nt.softly.uz/api/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    setDeleting(id)
+    UserApi.delete(id)
       .then(() => {
         setUsers((prev) => prev.filter((item) => item.id !== id));
-      });
+      }).finally(()=>{
+        setDeleting(null)
+      })
   }
 
   return (
-    <div className="w-full p-6   ">
+    <div className="w-full p-6 overflow-auto   ">
       <div className="flex justify-between mb-4 overflow-auto ">
         <h2 className="text-2xl font-bold ">Users</h2>
         <Button
@@ -138,12 +121,12 @@ function UsersPage() {
               key: "id",
               render: (id: number, userData:any) => {
                 return (
-                  <div>
-                    <Button onClick={() => onDelete(id)}>
-                      <DeleteOutlined />
-                    </Button>
+                  <div className="flex gap-2">
                     <Button onClick={() => setSelectedUser(userData)}>
                       <EditOutlined />
+                    </Button>
+                    <Button loading={deleting===id} danger onClick={() => onDelete(id)}>
+                      <DeleteOutlined />
                     </Button>
                   </div>
                 );

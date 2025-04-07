@@ -2,10 +2,14 @@ import { Button, Drawer, Form, Input, InputNumber, message, Select } from 'antd'
 import api from '../api/Api';
 import { CatigoriesType } from '../types';
 import { useEffect, useState } from 'react';
+import ProductApi from '../api/ProductsApi';
+// import ProductApi from '../api/ProductApi';
 
 function EditProduct({ set, selectedItem,fetchProducts }: any) {
     console.log(selectedItem);
     const [categoryNames, setCategoryNames] = useState<CatigoriesType[]>([]);
+    const [loading,setLoading]=useState<boolean>(false)
+
 
     useEffect(()=>{
       api.get('/api/categories').then(res=>{
@@ -20,11 +24,14 @@ function EditProduct({ set, selectedItem,fetchProducts }: any) {
 
         onFinish={(values)=>{
             console.log(values);
-            api.patch(`/api/products/${selectedItem.id}`,values).then(res=>{
+            setLoading(true)
+           ProductApi.update(selectedItem.id,values).then(res=>{
                 console.log(res.data);
                 message.success('ozgartirildi')
                 set()
                 fetchProducts()
+            }).finally(()=>{
+              setLoading(false)
             })
             
         }}
@@ -64,7 +71,7 @@ function EditProduct({ set, selectedItem,fetchProducts }: any) {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Submit
           </Button>
         </Form.Item>
