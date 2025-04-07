@@ -42,7 +42,7 @@ function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
               .then((res) => {
                 console.log(res.data);
 
-                fetchProducts?.();
+                fetchProducts();
               })
               .catch((e) => {
                 console.log(e.message);

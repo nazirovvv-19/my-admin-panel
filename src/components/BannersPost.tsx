@@ -43,7 +43,7 @@ function BannersPost({ setBannerDrawer, bannerDrawer, banners }: any) {
               .then((res) => {
                 console.log(res.data);
 
-                banners?.();
+                banners();
               })
               .catch((e) => {
                 console.log(e.message);

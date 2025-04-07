@@ -33,7 +33,7 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
               .then((res) => {
                 console.log(res.data);
 
-                user?.();
+                user();
                 form.resetFields()
                 // setUsers(res.data);
                 //refresh

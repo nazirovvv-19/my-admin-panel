@@ -1,7 +1,5 @@
-import { Button, Drawer, Form, Input, message, Select } from "antd";
+import { Button, Drawer, Form, Input, message } from "antd";
 import api from "../api/Api";
-import { useEffect, useState } from "react";
-import { CatigoriesType } from "../types";
 
 function EditCategory({
   setSelectedCategory,

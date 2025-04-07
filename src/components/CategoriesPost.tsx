@@ -39,7 +39,7 @@ function CategoriesPost({ setOpenDraver, isOpenDraver, CategoriesFetch }: any) {
               .then((res) => {
                 console.log(res.data);
 
-                CategoriesFetch?.();
+                CategoriesFetch();
               })
               .catch((e) => {
                 console.log(e.message);
