@@ -6,12 +6,13 @@ export type UserType = {
   image: string;
   role: string;
   createdAt: string;
+  phone: string | number;
 };
-export interface UserTypeObj{
-  items:UserType[]
-message:string
-page:number
-total:number
+export interface UserTypeObj {
+  items: UserType[];
+  message: string;
+  page: number;
+  total: number;
 }
 export interface bannerType {
   id: number;
@@ -66,8 +67,7 @@ export type CatigoriesType = {
   description: string;
   createdAt: string;
 };
-export interface CatigoriesTypeObj{
-  
+export interface CatigoriesTypeObj {
   items: CatigoriesType[];
   message: string;
   page: number;

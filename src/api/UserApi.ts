@@ -1,3 +1,4 @@
+import { UserType } from "../types"
 import api from "./Api"
 
 const UserApi={
@@ -7,7 +8,9 @@ const UserApi={
     delete:(id:number)=>{
         return api.delete(`/api/users/${id}`)
     },
-    create:(values:any)=>{
+    create:(values:UserType)=>{
+        console.log(values,'value');
+        
         return api.post(
             `https://nt.softly.uz/api/users`,
             { 
@@ -16,6 +19,7 @@ const UserApi={
               password: values.password,
               image: values.image,
               role: values.role,
+              phone:values.phone
             },
           
           )

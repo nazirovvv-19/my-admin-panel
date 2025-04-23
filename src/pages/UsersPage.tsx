@@ -14,6 +14,7 @@ function UsersPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<UserTypeObj>();
   const [deleting, setDeleting]=useState<number|null>(null)
+console.log(users , 'users');
 
 
   const user = () => {
@@ -114,6 +115,11 @@ function UsersPage() {
                   </>
                 );
               },
+            },
+            {
+              title:'phone',
+              dataIndex:'phone',
+              key:'id'
             },
             {
               title: "delete & edit",

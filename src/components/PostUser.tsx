@@ -14,7 +14,7 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
           form={form}
           layout="vertical"
           onFinish={(values) => {
-            setLoading(true)
+            setLoading(true);
             UserApi.create(values)
 
               .then((res) => {
@@ -28,9 +28,10 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
               .catch((e) => {
                 console.log(e.message);
                 message.error("xatolik");
-              }).finally(()=>{
-                setLoading(false)
               })
+              .finally(() => {
+                setLoading(false);
+              });
           }}
         >
           <Form.Item label="Name" name={"name"}>
@@ -55,8 +56,13 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
           <Form.Item label="Image" name={"image"}>
             <Input placeholder="Enter the image URL" />
           </Form.Item>
+          <Form.Item name={'phone'} label='phone number'>
+            <Input placeholder="telefon raqam" />
+          </Form.Item>
           <Form.Item>
-            <Button loading={loading} type="primary" htmlType="submit">Qoshish</Button>
+            <Button loading={loading} type="primary" htmlType="submit">
+              Qoshish
+            </Button>
           </Form.Item>
         </Form>
       </Drawer>
