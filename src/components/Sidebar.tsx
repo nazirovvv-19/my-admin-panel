@@ -6,12 +6,13 @@ function Sidebar() {
   const location = useLocation();
   return (
     <div className="w-50 h-full">
-      <aside className="h-full">
+      <aside className="h-full ">
         <Menu
           style={{
-            height: 670,
+            height: 690,
             maxWidth: 180,
             paddingRight: 5,
+            
             // width:180
           }}
           defaultSelectedKeys={[location.pathname]}

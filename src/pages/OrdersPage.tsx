@@ -120,12 +120,12 @@ function OrdersPage() {
               title: "Mahsulot",
               render: (items: any) => {
                 return (
-                  <div>
+                  <div className="">
                     {items?.map((item: OrderItem) => {
                       const nomi = productState.find((productItem) => {
                         return productItem.id === item.productId;
                       });
-                      return nomi?.name;
+                      return <div className="flex flex-col"><p>{nomi?.name}</p></div>
                     })}
                   </div>
                 );

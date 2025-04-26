@@ -54,7 +54,7 @@ function Products() {
   }
 
   return (
-    <div className="w-full p-6  overflow-auto">
+    <div className="w-full p-6  ">
       <div className="flex justify-between items-center mb-6">
         <h2>Product Page</h2>
         <Button onClick={() => setproductOpen(true)}>qoshish</Button>
@@ -68,7 +68,7 @@ function Products() {
       </div>
       <Table
       loading={loading}
-        style={{ overflow: "auto ", height: "100% " }}
+        style={{ overflow: "auto ", height: 600  }}
         size="small"
         dataSource={products.map((item) => ({ ...item, key: item.id }))}
         columns={[

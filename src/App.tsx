@@ -12,7 +12,7 @@ function App() {
         <>
           <Navbar />
 
-          <div className="flex ">
+          <div className="flex h-full ">
             <Sidebar />
             <Routers />
           </div>
