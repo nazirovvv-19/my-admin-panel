@@ -6,8 +6,8 @@ const ProductApi = {
         return api.get('/api/product/'+id)
 
     },
-    getAll:()=>{
-        return api.get("/api/products?limit=10&page=1&order=ASC")
+    getAll:(page=1,limit=10)=>{
+        return api.get(`/api/products?limit=${limit}&page=${page}&order=ASC`)
     },
     update:(id:number , values:any)=>{
         return api.patch(`/api/products/${id}`,values)

@@ -1,7 +1,8 @@
-import { Button, Drawer, Form, Input, message, Radio } from "antd";
+import { Button, Drawer, Form, Input, message, Radio, Upload } from "antd";
 import { useForm } from "antd/es/form/Form";
 import UserApi from "../api/UserApi";
 import { useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
 
 function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
   const [form] = useForm();
@@ -53,10 +54,19 @@ function PostUser({ setOpenUserDrawer, openUserDrawer, user }: any) {
               buttonStyle="solid"
             />
           </Form.Item>
-          <Form.Item label="Image" name={"image"}>
+          {/* <Form.Item label="Image" name={"image"}>
             <Input placeholder="Enter the image URL" />
+          </Form.Item> */}
+          <Form.Item name={'image'}>
+            <Upload
+              name="file"
+              action={`https://nt.softly.uz/api/files/upload`}
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
           </Form.Item>
-          <Form.Item name={'phone'} label='phone number'>
+
+          <Form.Item name={"phone"} label="phone number">
             <Input placeholder="telefon raqam" />
           </Form.Item>
           <Form.Item>

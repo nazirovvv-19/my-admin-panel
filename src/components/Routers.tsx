@@ -5,6 +5,8 @@ import HomePage from '../pages/Dashboard'
 import ProductsPage from '../pages/ProductsPage'
 import UsersPage from '../pages/UsersPage'
 import OrdersPage from '../pages/OrdersPage'
+import Contexthook from './Contexthook'
+import { StatisticsPage } from '../pages/StatisticsPage'
 
 function Routers() {
   return (
@@ -15,6 +17,8 @@ function Routers() {
     <Route path="/categories" element={<CategoriesPage/>}/>
     <Route path="/banner" element={<BannerPage/>}/>
     <Route path="/order" element={<OrdersPage/>}/>
+    <Route path="/con" element={<Contexthook/>}/>
+    <Route path="/statistic" element={<StatisticsPage/>}/>
     
     
   </Routes>

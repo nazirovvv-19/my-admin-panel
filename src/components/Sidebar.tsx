@@ -49,6 +49,16 @@ function Sidebar() {
                 label: <Link to={"/order"}>Orders</Link>,
                 icon: <ShoppingCartOutlined />,
               },
+              {
+                key: "/con",
+                label: <Link to={"/con"}>con</Link>,
+                icon: <ShoppingCartOutlined />,
+              },
+              {
+                key: "/statistic",
+                label: <Link to={"/statistic"}>Statistika</Link>,
+                icon: <ShoppingCartOutlined />,
+              },
           ]}
         />
       </aside>

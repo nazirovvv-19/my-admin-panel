@@ -42,7 +42,7 @@ function OrdersPost({ open, setOpen, orderFuntion }: any) {
             };
             setLoading(true);
             api
-              .post("/api/orders",ordersData)
+              .post("/api/orders", ordersData)
               .then((_) => {
                 orderFuntion();
                 message.success("Qoshildi");
@@ -53,8 +53,8 @@ function OrdersPost({ open, setOpen, orderFuntion }: any) {
               })
               .finally(() => {
                 setLoading(false);
-                form.resetFields()
-                setOpen(false)
+                form.resetFields();
+                setOpen(false);
               });
           }}
         >
@@ -90,6 +90,7 @@ function OrdersPost({ open, setOpen, orderFuntion }: any) {
           >
             <InputNumber />
           </Form.Item>
+        
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading}>
               qoshish

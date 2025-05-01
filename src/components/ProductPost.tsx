@@ -1,16 +1,24 @@
-import { Button, Drawer, Form, Input, InputNumber, message, Select } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, message, Select, Upload } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import api from "../api/Api";
 import { useEffect, useState } from "react";
 import { CatigoriesType } from "../types";
 import ProductApi from "../api/ProductsApi";
+import { UploadOutlined } from "@ant-design/icons";
+// import axios from "axios";
 // import ProductApi from "../api/ProductApi";
 
 function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
   const [form] = useForm();
   const [categoryName, setCategoryName] = useState<CatigoriesType[]>([])
-
+  // const [upload, setUpload] = useState()
+  // const FetchUpload = (values:any)=>{
+  //   axios.post('https://nt.softly.uz/api/files/upload',{
+    
+  //   })
+  // }
+    
   useEffect(()=>{
     api
       .get("/api/categories") 
@@ -21,6 +29,8 @@ function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
         console.error("Kategoriyalarni yuklashda xatolik:", err);
         message.error("Kategoriyalarni yuklashda xatolik ");
       });
+
+
   },[])
 
   return (
@@ -30,9 +40,11 @@ function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
           form={form}
           layout="vertical"
           onFinish={(values) => {
-            console.log(values);
+            console.log(values,'values',);
+            console.log(values.imageUrl.file.response.url,"Upload");
+            
 
-            ProductApi.create(values)
+            ProductApi.create({...values,imageUrl: values.imageUrl.file.response.url})
               .then((res) => {
                 console.log(res.data);
 
@@ -68,8 +80,15 @@ function ProductsPost({ setproductOpen, productOpen, fetchProducts }: any) {
             }
             })}/>
           </Form.Item>{" "}
-          <Form.Item label="Image" name={"imageUrl"}>
+          {/* <Form.Item label="Image" name={"imageUrl"}>
             <Input placeholder="Enter the image URL" />
+          </Form.Item> */}
+          <Form.Item name={'imageUrl'}>
+            <Upload name="file" action={
+              'https://nt.softly.uz/api/files/upload'
+            }>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
           </Form.Item>
           <Form.Item>
             <Button htmlType="submit" style={{ marginTop: 15 }}>
